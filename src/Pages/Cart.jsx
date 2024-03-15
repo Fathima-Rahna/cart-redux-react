@@ -3,10 +3,19 @@ import Header from '../Components/Header'
 
 import {useDispatch, useSelector } from 'react-redux'
 import { decQuantity, emptyCart, incQuantity, removeCartItem } from '../REDUX/Slices/cartSlice'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
+
+
+  
+
 
 
 
 const Cart = () => {
+  const navigate =useNavigate()
 
   const cartItems = useSelector(state=>state.cartReducer)
   const dispatch=useDispatch()
@@ -27,7 +36,13 @@ const Cart = () => {
       dispatch(removeCartItem(product.id))
     }
   }
-
+const handleCheckOut = () =>{
+  dispatch(emptyCart())
+  toast.success("Order placed successfully... thank you purchasing with us!!! ")
+  setTimeout(()=>{
+     navigate("/")
+  },3000)
+}
 
   
 
@@ -96,7 +111,7 @@ const Cart = () => {
         <div className="col-lg-4 shadow">
           <h3>Total items:<span className='text-danger  '>{cartItems?.length}</span></h3>
           <h2>Total Amount:<span className='text-danger '>$ {cartTotal}</span></h2>
-          <button  className='btn btn-success w-100'>Check Out</button>
+          <button onClick={handleCheckOut} className='btn btn-success w-100'>Check Out</button>
 
 
         </div>
@@ -111,6 +126,7 @@ const Cart = () => {
 </div>
 }
     </div>
+    <ToastContainer position='top-center' theme='colored' autoClose={3000} />
     </>
   )
 }
